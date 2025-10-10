@@ -1,0 +1,11 @@
+/* app/globals.css */
+
+/* 1. Explicitly load the JavaScript config file */
+@config "../tailwind.config.js";
+
+/* 2. Import Tailwind's core styles (no extra arguments needed here) */
+@import "tailwindcss";
+
+* {
+  font-family: Outfit;
+}
