@@ -1,84 +1,163 @@
-import { assets } from "@/assets/assets";
+"use client";
+
 import Image from "next/image";
-import React, { useState } from "react";
+import Link from "next/link";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { assets } from "../../assets/assets";
 
-const Contact = () => {
-  const [result, setResult] = useState("");
-
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    setResult("Sending....");
-    const formData = new FormData(event.target);
-
-    formData.append("access_key", "5d1dec60-5c87-4ef9-801f-d1b122d97e5c");
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      setResult("Form Submitted Successfully");
-      event.target.reset();
-    } else {
-      console.log("Error", data);
-      setResult(data.message);
-    }
-  };
+// Reusable Contact Item (light/dark mode)
+const ContactPill = ({ icon: Icon, title, text, href }) => {
   return (
-    <div
-      id="contact"
-      className={
-        "flex w-full scroll-mt-20 flex-col bg-[url('/footer-bg-color.png')] bg-[length:90%_auto] bg-center bg-no-repeat px-[12%] py-10"
-      }
+    <Link
+      href={href}
+      className="flex items-center gap-4 p-4 border rounded-lg 
+                 hover:bg-gray-100 dark:hover:bg-[#1f1f1f]
+                 border-gray-300 dark:border-gray-700
+                 transition"
     >
-      <h4 className="font-Ovo mb-2 text-center text-lg">Connect with me</h4>
-      <h2 className="font-Ovo text-center text-5xl">Get in touch</h2>
-
-      <p className="font-Ovo mx-auto mt-5 mb-12 max-w-2xl text-center text-gray-700">
-        I'd love to hear from you! If you have any questions, comments, or
-        feedback, please use the form below.
-      </p>
-      <form onSubmit={onSubmit} className="mx-auto max-w-2xl">
-        <div className="grid-cols-2 my-10 grid gap-5">
-          <input
-            type="text"
-            placeholder="Enter your name"
-            required
-            className="flex-1 rounded-md border-[0.5px] border-gray-400 bg-white p-3 outline-none"
-            name="name"
-          />
-          <input
-            type="email"
-            placeholder="Enter your email"
-            required
-            className="flex-1 rounded-md border-[0.5px] border-gray-400 bg-white p-3 outline-none"
-            name="email"
-          />
-        </div>
-
-        <textarea
-          rows={6}
-          placeholder="Enter Your message"
-          required
-          className="mb-6 w-full rounded-md border-[0.5px] border-gray-400 bg-white p-4 outline-none"
-          name="message"
-        ></textarea>
-        <button
-          type="submit"
-          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80 text-white rounded-full mx-auto hover:bg-black duration-500"
-        >
-          {" "}
-          Submit now{" "}
-          <Image src={assets.right_arrow_white} alt="" className="w-4" />
-        </button>
-
-        <p className="mt-4"> {result}</p>
-      </form>
-    </div>
+      <div className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full">
+        <Icon size={20} className="text-black dark:text-white" />
+      </div>
+      <div>
+        <p className="font-semibold text-black dark:text-white">{title}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">{text}</p>
+      </div>
+    </Link>
   );
 };
 
-export default Contact;
+export default function Contact() {
+  return (
+    <section
+      className="max-w-4xl mx-auto px-6 py-16 
+                        text-black dark:text-white 
+                        transition"
+    >
+      {/* Header */}
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">Get in Touch</h1>
+        <p
+          className="mt-4 max-w-2xl mx-auto 
+                       text-gray-600 dark:text-gray-300"
+        >
+          Have a project in mind, want to collaborate, or simply want to say
+          hello? I'm always open to new conversations. Reach out through any of
+          the options below.
+        </p>
+      </div>
+
+      {/* Image */}
+      <div className="flex justify-center mt-10">
+        <div
+          className="relative w-32 h-32 rounded-full overflow-hidden 
+                        border-4 border-black/80 dark:border-white/50"
+        >
+          <Image
+            src={assets.favprofile}
+            alt="Favour Maskoli"
+            width={128}
+            height={128}
+            className="object-cover"
+          />
+        </div>
+      </div>
+
+      {/* Contact Pills */}
+      <div className="grid md:grid-cols-3 gap-6 mt-12">
+        <ContactPill
+          icon={Phone}
+          title="Phone"
+          text="+234 813 456 7890"
+          href="tel:+2348134567890"
+        />
+
+        <ContactPill
+          icon={Mail}
+          title="Email"
+          text="wisefav6@gmail.com"
+          href="mailto:wisefav6@gmail.com"
+        />
+
+        <ContactPill
+          icon={MapPin}
+          title="Location"
+          text="Port Harcourt, Nigeria"
+          href="https://maps.google.com/?q=Port+Harcourt+Nigeria"
+        />
+      </div>
+
+      {/* Contact Form */}
+      <div
+        className="border rounded-lg p-8 mt-16 shadow-sm 
+                      border-gray-300 dark:border-gray-700 
+                      bg-white dark:bg-[#121212]"
+      >
+        <h2 className="text-2xl font-semibold mb-6">Send me a message</h2>
+
+        <form className="space-y-6">
+          <div>
+            <label
+              className="block text-sm font-medium mb-1 
+                               text-black dark:text-gray-200"
+            >
+              Your Name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              className="w-full p-3 border rounded-lg 
+                         bg-white dark:bg-[#1f1f1f]
+                         border-gray-300 dark:border-gray-700
+                         text-black dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label
+              className="block text-sm font-medium mb-1 
+                               text-black dark:text-gray-200"
+            >
+              Your Email
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full p-3 border rounded-lg 
+                         bg-white dark:bg-[#1f1f1f]
+                         border-gray-300 dark:border-gray-700
+                         text-black dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label
+              className="block text-sm font-medium mb-1 
+                               text-black dark:text-gray-200"
+            >
+              Message
+            </label>
+            <textarea
+              rows="5"
+              placeholder="Write your message here..."
+              className="w-full p-3 border rounded-lg 
+                         bg-white dark:bg-[#1f1f1f]
+                         border-gray-300 dark:border-gray-700
+                         text-black dark:text-white"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-black dark:bg-white 
+                       text-white dark:text-black
+                       py-3 rounded-lg font-semibold 
+                       hover:bg-gray-900 dark:hover:bg-gray-200
+                       transition"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+}
